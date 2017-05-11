@@ -1,6 +1,7 @@
 package main;
 
 import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Connection;
@@ -17,13 +18,17 @@ public class Main {
 		
 		Connection conn = dataSource.getConnection();
 		Statement stmt = conn.createStatement();
-		ResultSet rs = stmt.executeQuery("SELECT playerId, playerName FROM Players");
-		
-		System.out.printf("%5s | %-60s\n", "ID", "Name");
+		ResultSet rs = stmt.executeQuery("SELECT playerId, playerName, class FROM Players");
+
+		ResultSetMetaData rsmd = rs.getMetaData();
+		String name = rsmd.getColumnName(1);
+		 
+		System.out.printf("%5s | %-60s\n", "ID", name);
 		System.out.printf(String.format("%5s | %60s\n", "", "").replace(' ', '-'));
 		
 		while(rs.next()) {
-			System.out.printf("%5s | %-60s\n", rs.getInt(1), rs.getString(2));
+			
+			System.out.printf("%5s | %-20s | %-20s\n", rs.getInt(1), rs.getString(2), rs.getString(3));
 		}
 		
 		rs.close();
