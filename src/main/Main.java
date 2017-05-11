@@ -4,7 +4,11 @@ import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.Scanner;
 import java.sql.Connection;
+import java.sql.DatabaseMetaData;
+import java.sql.PreparedStatement;
+
 import com.mysql.jdbc.jdbc2.optional.MysqlDataSource;
 
 public class Main {
@@ -24,6 +28,7 @@ public class Main {
 		String name = rsmd.getColumnName(1);
 		 
 		System.out.printf("%5s | %-60s\n", "ID", name);
+		
 		System.out.printf(String.format("%5s | %60s\n", "", "").replace(' ', '-'));
 		
 		while(rs.next()) {
