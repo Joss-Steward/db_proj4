@@ -4,11 +4,7 @@ import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.Scanner;
 import java.sql.Connection;
-import java.sql.DatabaseMetaData;
-import java.sql.PreparedStatement;
-
 import com.mysql.jdbc.jdbc2.optional.MysqlDataSource;
 
 public class Main {
@@ -20,11 +16,20 @@ public class Main {
 		dataSource.setDatabaseName("csc371-30");
 		dataSource.setServerName("db.cs.ship.edu");
 		
+		
 		Connection conn = dataSource.getConnection();
 		Statement stmt = conn.createStatement();
 		ResultSet rs = stmt.executeQuery("SELECT playerId, playerName, class FROM Players");
 
 		ResultSetMetaData rsmd = rs.getMetaData();
+		
+
+		DBOperations dbo = new DBOperations(conn);
+		
+		dbo.insert();
+		
+		
+		
 		String name = rsmd.getColumnName(1);
 		 
 		System.out.printf("%5s | %-60s\n", "ID", name);

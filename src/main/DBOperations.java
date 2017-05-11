@@ -41,10 +41,11 @@ public class DBOperations{
 	{
 		System.out.printf("%-10s |  %-7s | %-30s%n", "","Item Name", "Weight", "Cost");
 
-		boolean success=false, fkFail=false;
-		int recipeID, itemID, quantity, count;
-
+		boolean success=false;
+		int recipeID, itemID = 0, quantity, count;
+		String itemName;
 		String selectRecipeSQL = "SELECT * FROM Recipes";
+		String selectItemSQL = "SELECT itemID FROM Items WHERE itemName = ?";
 		String insertRecipeSQL = "INSERT INTO Recipes ("
 				+ "recipeID,"
 				+ "craftedItemId, "
@@ -56,18 +57,34 @@ public class DBOperations{
 		System.out.println("Inserting Into Recipes Table\n");
 		System.out.print("\t Recipe ID[INT]:");
 		recipeID = reader.nextInt();
-		
-		System.out.print("\n\t Crafted Item Id[INT]:");
-		itemID = reader.nextInt();
+		reader.nextLine();
+		System.out.print("\n\t Crafted Item Name[String]:");
+		itemName = reader.nextLine();
 		
 		System.out.print("\n\t Quantity Made[INT]:");
 		quantity = reader.nextInt();
+		PreparedStatement ps;
+		ResultSet rs;
 
+		try {
+			
+			ps = conn.prepareStatement(selectItemSQL);
+			ps.setString(1, itemName);
+			rs = ps.executeQuery();
+			while(rs.next())
+			{
+				itemID = rs.getInt(1);
+			}
+
+		} catch (SQLException e1) {
+			e1.printStackTrace();
+		}
+		
 		while(!success)
 		{
 		
 			try {
-				PreparedStatement ps = conn.prepareStatement(insertRecipeSQL);
+				ps = conn.prepareStatement(insertRecipeSQL);
 				ps.setInt(1, recipeID);
 				ps.setInt(2, itemID);
 				ps.setInt(3, quantity);
@@ -76,7 +93,7 @@ public class DBOperations{
 				{
 					System.out.println("\nYou have Successfully Inserted into the Recipes Table\n\n\n");
 					success = true;
-					ResultSet rs = ps.executeQuery(selectRecipeSQL);
+					rs = ps.executeQuery(selectRecipeSQL);
 					
 					System.out.printf("%-10s |  %-16s | %-30s%n", "Recipe ID", "Crafted Item ID", "Quantity Made");
 					System.out.printf(String.format("%-10s |  %-16s | %-30s%n", "","", "").replace(' ', '-'));
