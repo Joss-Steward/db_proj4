@@ -197,9 +197,11 @@ public class Main {
 				break;
 			case 1:
 				System.out.println("Insert");
+				// dbo.insert();
 				break;
 			case 2:
 				System.out.println("Delete");
+				// dbo.delete();
 				break;
 			case 3:
 				System.out.println("Goodbye\n");
@@ -217,5 +219,4 @@ public class Main {
 
 		conn.close();
 	}
-
 }
