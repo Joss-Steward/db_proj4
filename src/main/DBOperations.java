@@ -227,8 +227,9 @@ public class DBOperations
 		{
 			String addAnyway;
 			System.out.print("Would you like to insert anyway? [y/n] :");
+			reader.nextLine();
 			addAnyway = reader.nextLine();
-
+			System.out.println(addAnyway);
 			if (addAnyway.equalsIgnoreCase("y"))
 			{
 				try
@@ -259,14 +260,14 @@ public class DBOperations
 
 		ps = conn.prepareStatement(selectItemSQL);
 		rs = ps.executeQuery();
-		System.out.printf("%-10s |  %-16s | %-30s%n", "Item Name", "Weight", "Cost");
+		System.out.printf("-10d |  %-20s |  %-16s | %-30s%n", "Item Name", "Weight", "Cost");
 		System.out.printf(String.format("%-10s |  %-16s | %-30s%n", "", "", "").replace(' ', '-'));
 
 		while (rs.next())
 		{
 			itemID = rs.getInt("itemID");
-			System.out.printf("%-10s |  %-16d | %-30d%n", rs.getString("itemName"), rs.getInt("weight"),
-					rs.getInt("cost"));
+			System.out.printf("%-10d |  %-20s |  %-16d | %-30d%n", itemID, rs.getString("itemName"),
+					rs.getInt("weight"), rs.getInt("cost"));
 
 		}
 		return itemID;
