@@ -25,6 +25,7 @@ public class Main {
 				break;
 			case 3:
 				System.out.println("Goodbye\n");
+				dbo.closeConnection();
 				break;
 			default:
 				System.out.println("Please select a valid option.");
