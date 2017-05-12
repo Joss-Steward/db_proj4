@@ -32,25 +32,6 @@ public class DBOperations {
 		conn.close();
 	}
 
-	/*
-	 * public String[] showTables(Connection conn) throws SQLException {
-	 * String[] types = {"TABLE"}; String[] tables = new String[100]; int num =
-	 * 0;
-	 *
-	 *
-	 * DatabaseMetaData dbmd = conn.getMetaData(); ResultSet rs =
-	 * dbmd.getTables(null, null, "%", types);
-	 * System.out.printf(String.format("%78s","","").replace(" ", "-")); while
-	 * (rs.next()) { if(num%3 == 0) System.out.println('\n');
-	 *
-	 * tables[num]=rs.getString("TABLE_NAME"); System.out.printf("%4d.%-20s|",
-	 * (num+1), tables[num]); num++; } System.out.println("");
-	 * System.out.printf(String.format("%78s","","").replace(" ", "-"));
-	 * System.out.println("\n\n");
-	 *
-	 * return tables; }
-	 */
-
 	public void insert() {
 		boolean success = false;
 		int recipeID, itemID = 0, quantity, count;
@@ -220,11 +201,6 @@ public class DBOperations {
 
 		}
 		return itemID;
-	}
-
-	public void delete() {
-		// TODO Auto-generated method stub
-
 	}
 
 }
