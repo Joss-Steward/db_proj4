@@ -59,7 +59,7 @@ public class DBOperations
 	{
 		String selectSQL = "SELECT playerId, playerName, class FROM Players";
 		ps = conn.prepareStatement(selectSQL);
-		ResultSet rs = ps.executeQuery();
+		rs = ps.executeQuery();
 
 		System.out.printf("%5s | %-20s | %-20s\n", "ID", "Player Name", "Class");
 		System.out.printf(String.format("%5s | %-20s | %-20s\n", "", "", "").replace(' ', '-'));
@@ -171,7 +171,6 @@ public class DBOperations
 	public int insertFK(String itemName)
 	{
 		boolean success = false;
-		String selectItemSQL = "SELECT * FROM Items";
 		String insertItemSql = "INSERT INTO Items (" + "itemName," + "weight," + "cost)" + "VALUES (?,?,?)";
 		String response;
 		int weight = 0, cost = 0, count = 0, itemID = 0;
@@ -206,17 +205,7 @@ public class DBOperations
 					if (count > 0)
 					{
 						success = true;
-						ResultSet rs = ps.executeQuery(selectItemSQL);
-						System.out.printf("%-10s |  %-16s | %-30s%n", "Item Name", "Weight", "Cost");
-						System.out.printf(String.format("%-10s |  %-16s | %-30s%n", "", "", "").replace(' ', '-'));
-
-						while (rs.next())
-						{
-							itemID = rs.getInt("itemID");
-							System.out.printf("%-10s |  %-16d | %-30d%n", rs.getString("itemName"), rs.getInt("weight"),
-									rs.getInt("cost"));
-
-						}
+						itemID = displayItems();
 
 					}
 				} catch (SQLException e)
@@ -234,9 +223,53 @@ public class DBOperations
 				}
 
 			}
+		} else if (response.equalsIgnoreCase("n"))
+		{
+			String addAnyway;
+			System.out.print("Would you like to insert anyway? [y/n] :");
+			addAnyway = reader.nextLine();
+
+			if (addAnyway.equalsIgnoreCase("y"))
+			{
+				try
+				{
+					displayItems();
+				} catch (SQLException e)
+				{
+					System.out.println("Could Not Display Items");
+				}
+				System.out.print("Choose An Item By Item ID:");
+				itemID = reader.nextInt();
+			}
 		}
 		return itemID;
 
+	}
+
+	/**
+	 * @param selectItemSQL
+	 * @param itemID
+	 * @return
+	 * @throws SQLException
+	 */
+	public int displayItems() throws SQLException
+	{
+		int itemID = 0;
+		String selectItemSQL = "SELECT * FROM Items";
+
+		ps = conn.prepareStatement(selectItemSQL);
+		rs = ps.executeQuery();
+		System.out.printf("%-10s |  %-16s | %-30s%n", "Item Name", "Weight", "Cost");
+		System.out.printf(String.format("%-10s |  %-16s | %-30s%n", "", "", "").replace(' ', '-'));
+
+		while (rs.next())
+		{
+			itemID = rs.getInt("itemID");
+			System.out.printf("%-10s |  %-16d | %-30d%n", rs.getString("itemName"), rs.getInt("weight"),
+					rs.getInt("cost"));
+
+		}
+		return itemID;
 	}
 
 	public void delete()
